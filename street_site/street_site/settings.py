@@ -116,6 +116,21 @@ SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [
     ('name', 'name'),
     ('picture', 'picture'),
 ]  # what data should be stored in the database
+# the customized pipeline of the authentication pipeline
+# more info at:
+#   https://python-social-auth.readthedocs.io/en/latest/pipeline.html
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.get_username',
+    'social_core.pipeline.user.create_user',
+    'street.social_auth.save_profile',  # a custom pipeline item
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+)
 # redirect using HTTPS (required by most social services)
 SOCIAL_AUTH_REDIRECT_IS_HTTPS = True
 # this JSONFIELD should be used when using PostgreSQL

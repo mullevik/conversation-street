@@ -7,10 +7,26 @@ from django.conf import settings
 class Profile(models.Model):
     """A custom extension of the default User model containing
     additional information about users"""
+    SOCIAL_FACEBOOK = 'facebook'
+    SUPPORTED_SOCIAL_SERVICES = [
+        (SOCIAL_FACEBOOK, "Facebook"),
+        # todo: more choices like google, instagram
+    ]
     display_name = models.CharField(max_length=50)
     user = models.OneToOneField(settings.AUTH_USER_MODEL,
                                 on_delete=models.CASCADE)
+    social_service = models.CharField(choices=SUPPORTED_SOCIAL_SERVICES,
+                                      max_length=30,
+                                      blank=True,
+                                      null=True,
+                                      editable=False)
     verified = models.BooleanField(default=False)
+    profile_image_link = models.CharField(max_length=200,
+                                          blank=True,
+                                          null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    date_modified = models.DateTimeField(auto_now=True)
+    date_deleted = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
         # noinspection PyUnresolvedReferences

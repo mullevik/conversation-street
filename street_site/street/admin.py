@@ -12,7 +12,14 @@ from django.contrib import admin
 
 from .models import *
 
-# Enable read-only un-editable fields
+
+class ProfileAdmin(admin.ModelAdmin):
+    """Admin helper for showing un-editable information for profile"""
+    readonly_fields = (
+        'social_service',
+        'date_created',
+        'date_modified',
+    )
 
 
 class QuestionAdmin(admin.ModelAdmin):
