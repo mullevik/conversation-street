@@ -12,6 +12,10 @@ class Profile(models.Model):
                                 on_delete=models.CASCADE)
     verified = models.BooleanField(default=False)
 
+    def __str__(self):
+        # noinspection PyUnresolvedReferences
+        return "{} ({})".format(self.display_name, self.user.username)
+
 
 class Category(models.Model):
     """A category for questions"""
@@ -24,6 +28,9 @@ class Category(models.Model):
                                on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return "{} ({})".format(self.name, self.identifier)
+
 
 class Tag(models.Model):
     """A tag for questions"""
@@ -35,6 +42,9 @@ class Tag(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                on_delete=models.CASCADE)
     date_created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return "{} ({})".format(self.name, self.identifier)
 
 
 class Like(models.Model):
@@ -59,11 +69,14 @@ class Question(models.Model):
                                  on_delete=models.SET_NULL,
                                  null=True,
                                  blank=True)
-    tags = models.ManyToManyField(Tag)
-    likes = models.ManyToManyField(Like)
+    tags = models.ManyToManyField(Tag, blank=True)
+    likes = models.ManyToManyField(Like, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     date_deleted = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        return "{} ({})".format(self.text, self.identifier)
 
 
 class Comment(models.Model):
@@ -77,7 +90,12 @@ class Comment(models.Model):
                                        blank=True)
     author = models.ForeignKey(settings.AUTH_USER_MODEL,
                                on_delete=models.CASCADE)
+    likes = models.ManyToManyField(Like, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
     date_deleted = models.DateTimeField(blank=True, null=True)
+
+    def __str__(self):
+        # noinspection PyUnresolvedReferences
+        return "{} ({})".format(self.question.identifier, self.author.name)
 
