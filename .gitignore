@@ -134,3 +134,5 @@ dmypy.json
 
 # passwords and stuff
 passwords.txt
+secret_constants.py
+
